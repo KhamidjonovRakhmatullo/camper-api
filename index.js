@@ -22,8 +22,13 @@ if(process.env.NODE_ENV === "development"){
     app.use(morgan("dev"))
 }
 
-//routes
+///////routes
+//auth
 app.use("/v1/auth", require("./routes/user.routes"))
+//motor
+app.use("/v1/motor", require("./routes/motor.routes"))
+//caravan
+app.use("/v1/caravan", require("./routes/caravan.routes"))
 
 //port listen
 const PORT = process.env.PORT || 8080
