@@ -7,8 +7,9 @@ const colors = require("colors")
 //initionalize .env
 dotenv.config();
 
-//conneting db
+//conneting db 
 connectDB()
+
 
 //app instance
 const app = express();
@@ -29,6 +30,10 @@ app.use("/v1/auth", require("./routes/user.routes"))
 app.use("/v1/motor", require("./routes/motor.routes"))
 //caravan
 app.use("/v1/caravan", require("./routes/caravan.routes"))
+//tuning
+app.use("/v1/tuning", require("./routes/tuning.routes"))
+//usedCar
+app.use("/v1/usedCar", require("./routes/usedCar.routes"))
 
 //port listen
 const PORT = process.env.PORT || 8080

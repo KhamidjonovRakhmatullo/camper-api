@@ -16,9 +16,9 @@ const addNewMotor = async (req, res) => {
       rate,
     });
     res.status(500).json({
-        success: true,
-        data: motor,
-    })
+      success: true,
+      data: motor,
+    });
   } catch (error) {
     res.status(201).json({
       success: false,
@@ -27,4 +27,24 @@ const addNewMotor = async (req, res) => {
   }
 };
 
-module.exports = {addNewMotor}
+const getAllMotor = async(req, res) => {
+  try {
+    // const pageLimit = process.env.DEFAULT_PAGE_LIMIT || 5;
+    // const limit = parseInt(req.qeury.limit || pageLimit);
+
+    const motor = await Motor.find();
+
+    res.status(201).json({
+      success: true,
+      MotorAllData: motor
+    })
+
+  } catch (error) {
+    res.status(201).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+module.exports = { addNewMotor, getAllMotor };
