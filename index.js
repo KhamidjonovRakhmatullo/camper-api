@@ -34,6 +34,8 @@ app.use("/v1/caravan", require("./routes/caravan.routes"))
 app.use("/v1/tuning", require("./routes/tuning.routes"))
 //usedCar
 app.use("/v1/usedCar", require("./routes/usedCar.routes"))
+//camping Place
+app.use("/v1/campingPlace", require("./routes/campingPlace.routes"))
 
 //port listen
 const PORT = process.env.PORT || 8080

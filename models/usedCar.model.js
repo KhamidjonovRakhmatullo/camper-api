@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const UsedCarScheme = mongoose.Schema(
+const UsedCarScheme = new mongoose.Schema(
     {
         name:{
             type:String,

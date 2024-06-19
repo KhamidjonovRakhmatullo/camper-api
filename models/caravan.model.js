@@ -1,6 +1,6 @@
 const mongoose = require( "mongoose")
 
-const CaravanScheme = mongoose.Schema(
+const CaravanScheme = new mongoose.Schema(
     {
         name: {
             type:String,

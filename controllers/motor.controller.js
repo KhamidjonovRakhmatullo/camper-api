@@ -15,36 +15,40 @@ const addNewMotor = async (req, res) => {
       location,
       rate,
     });
-    res.status(500).json({
+    res.status(201).json({
       success: true,
       data: motor,
     });
   } catch (error) {
-    res.status(201).json({
+    res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
 
-const getAllMotor = async(req, res) => {
+const getAllMotor = async (req, res)=> {
   try {
-    // const pageLimit = process.env.DEFAULT_PAGE_LIMIT || 5;
-    // const limit = parseInt(req.qeury.limit || pageLimit);
-
-    const motor = await Motor.find();
-
+    const pageLimit = process.env.DEFAULT_PAGE_LIMIT || 3
+    const limit = parseInt(req.query.limit || pageLimit)
+    const page = parseInt(req.query.page || 1)
+    const total = await Motor.countDocuments();
+  
+    const motor = await Motor.find().skip(page * limit - limit);
+  
     res.status(201).json({
+      pageCount: Math.ceil(total / limit),
       success: true,
-      MotorAllData: motor
+      currentPage: page,
+      dataMotor: motor,
     })
-
+    
   } catch (error) {
-    res.status(201).json({
+    res.status(500).json({
       success: false,
       message: error.message,
     });
   }
-};
+}
 
 module.exports = { addNewMotor, getAllMotor };

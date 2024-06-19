@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const TuningScheme = mongoose.Schema(
+const TuningScheme = new mongoose.Schema(
     {
         name:{
             type:String,

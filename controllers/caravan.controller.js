@@ -15,12 +15,12 @@ const addNewCaravan = async (req, res) => {
       location,
       rate,
     });
-    res.status(500).json({
+    res.status(201).json({
       success: true,
       dataCaravan: caravan,
     });
   } catch (error) {
-    res.status(201).json({
+    res.status(500).json({
       success: false,
       message: error.message,
     });

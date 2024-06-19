@@ -16,12 +16,12 @@ const addNewTuning = async (req, res) => {
       rate,
     });
 
-    res.status(500).json({
+    res.status(201).json({
       success: true,
       dataTuning: tuning,
     });
   } catch (error) {
-    res.status(201).json({
+    res.status(500).json({
         success: false,
         message: error.message,
     })
