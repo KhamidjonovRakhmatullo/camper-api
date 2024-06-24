@@ -2,7 +2,8 @@ const express = require("express")
 const dotenv = require("dotenv")
 const connectDB = require("./config/db");
 const morgan = require("morgan");
-const colors = require("colors")
+const colors = require("colors");
+const errorHandler = require("./middleware/errorHandler");
 
 //initionalize .env
 dotenv.config();
@@ -36,6 +37,8 @@ app.use("/v1/tuning", require("./routes/tuning.routes"))
 app.use("/v1/usedCar", require("./routes/usedCar.routes"))
 //camping Place
 app.use("/v1/campingPlace", require("./routes/campingPlace.routes"))
+//err
+app.use(errorHandler)
 
 //port listen
 const PORT = process.env.PORT || 8080

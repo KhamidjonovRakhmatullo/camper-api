@@ -1,39 +1,41 @@
-const jwt = require("jsonwebtoken")
-const User = require("../models/user.model")
+const jwt = require("jsonwebtoken");
+const User = require("../models/user.model");
+
 
 exports.protected = async (req, res, next) => {
   let token;
-  //checking is there this user's token?
+  //have token?
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
   }
-  //if no token
-  if(!token){
+  //if no:
+  if (!token) {
     res.status(403).json({
-        success: false,
-        message: "Forbidden",
-      });
+      success: false,
+      message: "Forbidden!",
+    });
   }
-  //decoding token
-  const decode = jwt.verify(token, process.env.JWT_TOKEN_SECRET)
-  if(!decode.id){
+  //decode token
+  const decoded = jwt.verify(token, process.env.JWT_TOKEN_SECRET)
+
+  if(!decoded.id){
     res.status(403).json({
-        success: false,
-        message: "Forbidden",
-      });
+        success: "false",
+        message: "Forbidden!"
+    })
   }
-///
-  const user = await User.findById(decode.id)
-//   console.log(user)
+  //find
+  const user = await User.findById(decoded.id)
+  
   if(!user){
     res.status(403).json({
-        success: false,
-        message: "Forbidden",
-      });
+        success: "false",
+        message: "Forbidden!"
+    })
   }
-  req.body.user = user;
+  req.body.user = user
   next();
 };

@@ -1,9 +1,10 @@
+const asyncHandler = require("../middleware/asyncHandler");
 const User = require("../models/user.model");
 const uuid = require("uuid");
+const ErrorResponse = require("../utils/errorResponse");
 
 //register
-const register = async (req, res) => {
-  try {
+const register = asyncHandler(async (req, res, next) => {
     const { name, email, password } = req.body;
 
     const apiKey = uuid.v4();
@@ -11,12 +12,9 @@ const register = async (req, res) => {
     ///unique email
     const userExist = await User.findOne({email})
     if(userExist){
-        return res.status(409).json({
-          success: false, 
-          message: "This user's email already exists"
-        })
+        return next(new ErrorResponse("This user's email already exists", 409))
     }
-   ////
+   ////create
     const user = await User.create({
       name,
       email,
@@ -29,48 +27,29 @@ const register = async (req, res) => {
       data: user,
     });
     //err
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
+})
 
 // login
-const login = async (req, res) => {
-  try {
+const login = asyncHandler(async (req, res, next) => {
     const { email, password } = req.body;
     ///email
     const userInfo = await User.findOne({ email });
 
     if (!userInfo) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "Invalid credentials! Email", 
-      });
+      return next(new ErrorResponse("Invalid credentials!", 404))
     }
-    ///password
+    ///password match
     const isMatch = await userInfo.matchPassword(password);
 
     if (!isMatch) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "Invalid credentials! Password", 
-      });
+      return next(new ErrorResponse("Invalid credentials!", 404))
     }
     //token
-    const token = userInfo.generatedJwtToken()
+    const token = await userInfo.generatedJwtToken()
 
     res.status(200).json({ success: true, data: token });
     ///err
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
+})
 
 //me
 const me = async (req, res) => {
@@ -80,7 +59,7 @@ const me = async (req, res) => {
     res.status(200).json({
       success: true,
       data: user
-    })
+    });
   } catch (error) {
     res.status(500).json({
       success: false,

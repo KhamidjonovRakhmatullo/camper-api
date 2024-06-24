@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
+//scheme of data
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -52,7 +53,5 @@ userSchema.methods.generatedJwtToken = function(){
   { expiresIn: `24h` } 
   )
 }
-
-
 
 module.exports = mongoose.model("User", userSchema);
