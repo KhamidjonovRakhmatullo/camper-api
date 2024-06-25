@@ -1,5 +1,5 @@
-const errorHandler = (err, req, res, next) => {
-    let error = {...err} 
+const ErrorHandler = (err, req, res, next)=> {
+    let error = {...err}
     error.message = err.message
     res.status(error.statusCode || 500).json({
         success: false,
@@ -7,4 +7,4 @@ const errorHandler = (err, req, res, next) => {
     })
 }
 
-module.exports = errorHandler
+module.exports = ErrorHandler

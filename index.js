@@ -3,7 +3,7 @@ const dotenv = require("dotenv")
 const connectDB = require("./config/db");
 const morgan = require("morgan");
 const colors = require("colors");
-const errorHandler = require("./middleware/errorHandler");
+const ErrorHandler = require("./middleware/errorHandler");
 
 //initionalize .env
 dotenv.config();
@@ -38,7 +38,7 @@ app.use("/v1/usedCar", require("./routes/usedCar.routes"))
 //camping Place
 app.use("/v1/campingPlace", require("./routes/campingPlace.routes"))
 //err
-app.use(errorHandler)
+app.use(ErrorHandler)
 
 //port listen
 const PORT = process.env.PORT || 8080

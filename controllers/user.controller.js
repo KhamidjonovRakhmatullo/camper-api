@@ -52,20 +52,13 @@ const login = asyncHandler(async (req, res, next) => {
 })
 
 //me
-const me = async (req, res) => {
-  try {
+const me = asyncHandler(async (req, res, next) => {
     const {user} = req.body
 
     res.status(200).json({
       success: true,
       data: user
     });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-}
+})
 
 module.exports = { register, login, me};
