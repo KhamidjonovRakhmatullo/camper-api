@@ -6,7 +6,8 @@ const ErrorResponse = require("../utils/errorResponse");
 //register
 const register = asyncHandler(async (req, res, next) => {
     const { name, email, password } = req.body;
-
+    console.log(req.file)
+    
     const apiKey = uuid.v4();
 
     ///unique email
@@ -19,6 +20,7 @@ const register = asyncHandler(async (req, res, next) => {
       name,
       email,
       password,
+      avatar: req.file ? "/uploads/" + req.file.filename : ``,
       apiKey,
     });
 

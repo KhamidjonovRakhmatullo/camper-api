@@ -4,6 +4,7 @@ const connectDB = require("./config/db");
 const morgan = require("morgan");
 const colors = require("colors");
 const ErrorHandler = require("./middleware/errorHandler");
+const path = require("path")
 
 //initionalize .env
 dotenv.config();
@@ -18,6 +19,8 @@ const app = express();
 //for data
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
+//static file
+app.use(express.static(path.join(__dirname, "public")))
 
 //development
 if(process.env.NODE_ENV === "development"){
