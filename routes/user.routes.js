@@ -1,12 +1,12 @@
 const {Router} = require("express");
 const { register, login, me, update, deleteAccount, getUserInfo, get } = require("../controllers/user.controller");
 const {protected} = require("../middleware/auth.middleware");
-const upload = require("../utils/fileUpload");
+const uploadDisk = require("../utils/multer");
 
 const router = Router();
 
 
-router.post("/register", upload.single("avatar"), register)
+router.post("/register", uploadDisk.single("avatar"), register)
 
 router.post("/login", login)
 

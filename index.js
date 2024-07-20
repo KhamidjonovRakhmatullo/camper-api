@@ -19,7 +19,7 @@ const app = express();
 //for data
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
-//static file
+//static file for uploaded images
 app.use(express.static(path.join(__dirname, "public")))
 
 //development
@@ -28,6 +28,8 @@ if(process.env.NODE_ENV === "development"){
 }
 
 ///////routes
+//home
+app.use("/", (req, res)=> {res.send("API run!")})
 //auth
 app.use("/v1/auth", require("./routes/user.routes"))
 //motor

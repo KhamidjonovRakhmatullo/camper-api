@@ -2,11 +2,37 @@ const asyncHandler = require("../middleware/asyncHandler");
 const User = require("../models/user.model");
 const uuid = require("uuid");
 const ErrorResponse = require("../utils/errorResponse");
+const { uploadFile } = require("../utils/s3");
+const path = require ("path")
 
 //register
 const register = asyncHandler(async (req, res, next) => {
   const { name, email, password } = req.body;
   // console.log(req.file)
+
+  ////***************************** */
+  ////***************************** */
+  ////***************************** */
+
+  //***********************///
+  /*                        */
+  /*   upload file to AWS   */
+  /*                        */
+  //***********************///
+  const uploadEDfile = req.file
+
+  if(!uploadEDfile){
+    return next(new ErrorResponse("Image required", 409))
+  }
+  const uid = uuid.v4()
+  const file_path = await uploadFile(
+     uploadEDfile.buffer,
+     uid + path.extname(uploadEDfile.originalname)
+  )
+
+  ////***************************** */
+  ////***************************** */
+  ////***************************** */
 
   const apiKey = uuid.v4();
 
@@ -20,7 +46,8 @@ const register = asyncHandler(async (req, res, next) => {
     name,
     email,
     password,
-    avatar: req.file ? "/uploads/" + req.file.filename : ``,
+    // avatar: req.file ? "/uploads/" + req.file.filename : ``,
+    avatar: file_path,
     apiKey,
   });
 
@@ -31,6 +58,7 @@ const register = asyncHandler(async (req, res, next) => {
   //err
 });
 
+//********************** */
 // login
 const login = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
@@ -49,7 +77,7 @@ const login = asyncHandler(async (req, res, next) => {
   //token
   const token = await userInfo.generatedJwtToken();
 
-  res.status(200).json({ success: true, data: token });
+  res.status(200).json({ success: true, token: token });
   ///err
 });
 
@@ -80,20 +108,19 @@ const getUserInfo = asyncHandler(async (req, res, next) => {
 });
 
 //update
-const update = asyncHandler(async (req, res) => {
-  const id = req.body.user._id;
-  const { name, email } = req.body;
-
+const update = asyncHandler(async(req, res)=> {
+  const id = req.body.user._id 
+  const {name, email} = req.body
   const changesUser = await User.findByIdAndUpdate(
     id,
-    { name, email },
-    { new: true }
-  );
+    {name, email},
+    {new: true}
+  )
   res.status(200).json({
     success: true,
     messageData : changesUser
   })
-});
+})
 
 //delete
 const deleteAccount = asyncHandler(async (req, res) => {
