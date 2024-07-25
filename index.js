@@ -29,7 +29,7 @@ if(process.env.NODE_ENV === "development"){
 
 ///////routes
 //home
-app.use("/", (req, res)=> {res.send("<h1>API run!</h1>")})
+app.use("/", (req, res)=> {res.send("<h1> API run!!! </h1>")})
 //auth
 app.use("/v1/auth", require("./routes/user.routes"))
 //motor
